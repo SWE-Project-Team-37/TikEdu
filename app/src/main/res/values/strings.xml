@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">TikEdu</string>
+    <string name="title_activity_main">MainActivity</string>g>
+    <string name="appName">TikEdu</string>
+    <string name="currentScreenName">New User</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="comment_button_description">Comment</string>
+    <string name="dislike_button_description">Dislike</string>
+    <string name="okay_like_button_description">Okay like</string>
+    <string name="home_button_description">Home</string>
+    <string name="like_button_description">Like</string>
+    <string name="add_video_button_description">Add video</string>
+    <string name="view_classes_button_description">View classes</string>
+    <string name="student_textView">TikEdu Student</string>
+    <string name="bottom_screen_task_bar_description">Bottom screen task bar</string>
+    <string name="top_screen_task_bar_description">Top screen task bar</string>
+</resources>
