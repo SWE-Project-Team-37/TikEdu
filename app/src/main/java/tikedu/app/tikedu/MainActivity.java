@@ -18,7 +18,7 @@ import tikedu.app.tikedu.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity
 {
-    /** Test to see if Git works*/
+    /** Test to see if Git */
 
     private ActivityMainBinding binding;
 
