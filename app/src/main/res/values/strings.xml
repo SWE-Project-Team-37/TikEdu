@@ -15,4 +15,9 @@
     <string name="student_textView">TikEdu Student</string>
     <string name="bottom_screen_task_bar_description">Bottom screen task bar</string>
     <string name="top_screen_task_bar_description">Top screen task bar</string>
+    <string name="teacher_textView">TikEdu Teacher</string>
+    <string name="class_posts">Class Posts</string>
+    <string name="unapproved_posts">Unapproved Posts</string>
+    <string name="approve">Approve</string>
+    <string name="deny">Deny</string>
 </resources>
