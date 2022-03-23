@@ -16,6 +16,12 @@
             android:name=".StudentCommentActivity"
             android:exported="false" />
         <activity
+            android:name=".ApproveOrDenyVideosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherClassMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".StudentClassesActivity"
             android:exported="false" />
         <activity

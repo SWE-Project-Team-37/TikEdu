@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".ApproveOrDenyVideosActivity">
+
+    <ImageView
+        android:id="@+id/bottom_black_bar"
+        android:layout_width="420dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/bottom_screen_task_bar_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/screen_background_dark" />
+
+    <ImageView
+        android:id="@+id/top_black_bar"
+        android:layout_width="420dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/top_screen_task_bar_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/screen_background_dark" />
+
+    <ImageButton
+        android:id="@+id/home_button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/black"
+        android:contentDescription="@string/home_button_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/bottom_black_bar"
+        app:srcCompat="@drawable/ic_baseline_home_24" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="@string/teacher_textView"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@+id/top_black_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/computer_class_button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/black"
+        android:contentDescription="@string/view_classes_button_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bottom_black_bar"
+        app:srcCompat="@drawable/ic_baseline_computer_24" />
+
+    <Button
+        android:id="@+id/approveButton"
+        android:layout_width="115dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/approve"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/home_button"
+        app:layout_constraintTop_toTopOf="@+id/bottom_black_bar" />
+
+    <Button
+        android:id="@+id/denyButton"
+        android:layout_width="115dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/deny"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/computer_class_button"
+        app:layout_constraintStart_toEndOf="@+id/approveButton"
+        app:layout_constraintTop_toTopOf="@+id/bottom_black_bar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
