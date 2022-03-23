@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TikEdu">
         <activity
+            android:name=".StudentPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentCommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ApproveOrDenyVideosActivity"
             android:exported="false" />
         <activity
