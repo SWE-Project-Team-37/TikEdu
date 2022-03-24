@@ -8,7 +8,7 @@ import android.view.Window;
 import java.util.Objects;
 
 public class ApproveOrDenyVideosActivity extends AppCompatActivity {
-
+    // Mason was here
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
