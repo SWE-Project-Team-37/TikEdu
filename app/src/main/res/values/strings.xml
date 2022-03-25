@@ -21,4 +21,9 @@
     <string name="unapproved_posts">Unapproved Posts</string>
     <string name="approve">Approve</string>
     <string name="deny">Deny</string>
+    <string name="password_criteria">Passwords have to satisfy the following properties:\n&#8226;It cannot be empty\n&#8226;It contains at least 8 characters and at most 20 characters.\n&#8226;It contains at least one digit.\nIt contains at least one upper case alphabet.\n&#8226;It contains at least one lower case alphabet.\n&#8226;It contains at least one special character which includes !@#$%&amp;*()-+=^.\n&#8226;It doesn\'t contain any white space.</string>
+    <string-array name="usertype_array">
+        <item>Student</item>
+        <item>Teacher</item>
+    </string-array>
 </resources>

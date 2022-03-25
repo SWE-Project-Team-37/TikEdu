@@ -44,19 +44,6 @@ private FragmentNewUserBinding binding;
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        binding.testingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                // an intent is "what we want to happen" - intent is to go to home screen
-                // Intent(ApplicationContext, SomeClass)
-                Intent startIntent = new Intent(getActivity(), StudentHomeActivity.class);
-                startActivity(startIntent);
-            }
-
-        });
-
         //navigates to sign up fragment
         binding.signUpNavButton.setOnClickListener(new View.OnClickListener() {
             @Override
