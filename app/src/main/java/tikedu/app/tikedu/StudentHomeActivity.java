@@ -1,6 +1,7 @@
 package tikedu.app.tikedu;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -56,6 +57,16 @@ public class StudentHomeActivity extends AppCompatActivity
             public void onClick(View view) {
                 // "selected" states are defined in dislike_button_tint_color.xml
                 dislikeButton.setSelected(!dislikeButton.isSelected());
+            }
+        });
+
+        // post a video
+        ImageButton postButton = findViewById(R.id.post_button);
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StudentHomeActivity.this, ChooseVideoActivity.class);
+                startActivity(intent);
             }
         });
     }
