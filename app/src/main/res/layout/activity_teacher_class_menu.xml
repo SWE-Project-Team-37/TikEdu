@@ -85,7 +85,7 @@
         android:background="@color/black"
         android:contentDescription="@string/view_classes_button_description"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bottom_black_bar"
         app:srcCompat="@drawable/ic_baseline_computer_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

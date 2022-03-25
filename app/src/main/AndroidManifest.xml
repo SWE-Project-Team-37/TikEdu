@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tikedu.app.tikedu">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikEdu">
+        <activity
+            android:name=".TeacherCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherClassesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChooseVideoActivity"
+            android:exported="false" />
         <activity
             android:name=".StudentPostActivity"
             android:exported="false" />
