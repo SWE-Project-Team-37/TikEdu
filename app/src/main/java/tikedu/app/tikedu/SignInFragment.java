@@ -31,6 +31,7 @@ public class SignInFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         binding.signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,5 +44,15 @@ public class SignInFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public static boolean usernameIsValid(String username)
+    {
+        return username.matches("[a-zA-Z0-9]{1,16}");
+    }
+
+    public static boolean passwordIsValid(String password)
+    {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$");
     }
 }
