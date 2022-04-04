@@ -1,5 +1,6 @@
 package tikedu.app.tikedu;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO: Implement actual sign in functionality
+
             }
         });
     }

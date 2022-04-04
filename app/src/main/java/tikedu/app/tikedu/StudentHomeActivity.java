@@ -30,33 +30,52 @@ public class StudentHomeActivity extends AppCompatActivity
             startActivity(startIntent);
         });
 
-        // change like button color when it is pressed
+        // find all "reaction" buttons
         ImageButton likeButton = findViewById(R.id.like_button);
+        ImageButton midlikeButton = findViewById(R.id.midlike_button);
+        ImageButton dislikeButton = findViewById(R.id.dislike_button);
+        // change like button color when it is pressed
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // "selected" states are defined in like_button_tint_color.xml
                 likeButton.setSelected(!likeButton.isSelected());
+                // if the like button is selected, deselect the others
+                if (likeButton.isSelected())
+                {
+                    midlikeButton.setSelected(false);
+                    dislikeButton.setSelected(false);
+                }
             }
         });
 
         // change midlike button color when it is pressed
-        ImageButton midlikeButton = findViewById(R.id.midlike_button);
         midlikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // "selected" states are defined in midlike_button_tint_color.xml
                 midlikeButton.setSelected(!midlikeButton.isSelected());
+                // if the midlike button is selected, deselect the others
+                if (midlikeButton.isSelected())
+                {
+                    likeButton.setSelected(false);
+                    dislikeButton.setSelected(false);
+                }
             }
         });
 
         // change dislike button color when it is pressed
-        ImageButton dislikeButton = findViewById(R.id.dislike_button);
         dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // "selected" states are defined in dislike_button_tint_color.xml
                 dislikeButton.setSelected(!dislikeButton.isSelected());
+                // if the dislike button is selected, deselect the others
+                if (dislikeButton.isSelected())
+                {
+                    likeButton.setSelected(false);
+                    midlikeButton.setSelected(false);
+                }
             }
         });
 
