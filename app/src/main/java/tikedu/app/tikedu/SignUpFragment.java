@@ -29,8 +29,10 @@ public class SignUpFragment extends Fragment {
     private List<Pair<String,String>> userSignUpFields;
     private boolean hasEditedUsername = false;
     private boolean usernameIsValid = false;
+    private boolean passwordIsValid = false;
     private boolean hasEditedPassword = false;
     private String usertype = "";
+
 
     @Override
     public View onCreateView(
@@ -46,8 +48,6 @@ public class SignUpFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //clears the default example text so user doesn't have to manually delete or backspace
 
 
         //remove username validation hint textview when no longer editing username
@@ -161,14 +161,24 @@ public class SignUpFragment extends Fragment {
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //TODO: Implement actual sign up functionality
+                /*
+                make sure multiple, possibly impatient, clicks of the button don't perform or spawn redundant work
+
+                1.Send data to server
+                2. Get result
+                3. If successful go to next screen, otherwise inform the user why the sign up request wasn't successful
+
+                 */
+
                 String _username = binding.editTextSignUpUsername.getText().toString();
                 String _password = binding.editTextSignUpPassword.getText().toString();
                 String _usertype = usertype;
 
-                if(_usertype != "")
+                if(_usertype != "" && usernameIsValid && passwordIsValid)
                 {
-                    Log.d("Sign Up", "username:" + _username + "\n_password:" + _password + "\nusertype:" + usertype);
+                    //TODO: Send stuff to the server
                 }
             }
         });
@@ -191,7 +201,7 @@ public class SignUpFragment extends Fragment {
             usernameIsValid = false;
             usernameHints += "Username has to be between 1 and 16 characters\n";
         }
-        else if(!currentUsername.matches("[A-Za-z0-9]+"))
+        else if(!currentUsername.matches("^[a-zA-Z0-9]+$"))
         {
             usernameIsValid = false;
             usernameHints += "Username has to consist of alphanumeric characters (A-Z a-z 0-9) only\n";
@@ -224,24 +234,16 @@ public class SignUpFragment extends Fragment {
         String currentPassword = editable.toString();
 
         //set look of editTextView to reflect validity
-        try
+        if(currentPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$"))
         {
-            if(!currentPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\\\S+$).{8,20}$"))
-            {
-                Log.d("Sign Up", "nani3");
-                binding.passwordValidationHint.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                Log.d("Sign Up", "nani2");
-                binding.passwordValidationHint.setVisibility(View.GONE);
-            }
+            binding.passwordValidationHint.setVisibility(View.GONE);
+            passwordIsValid = true;
         }
-        catch (Exception e)
+        else
         {
-            Log.d("Sign Up", "NANI ", e);
+            binding.passwordValidationHint.setVisibility(View.VISIBLE);
+            passwordIsValid = false;
         }
-
     }
 
 }
