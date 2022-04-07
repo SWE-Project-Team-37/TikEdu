@@ -46,7 +46,8 @@ public class SignUpFragment extends Fragment {
 
     }
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
 
 
@@ -160,25 +161,23 @@ public class SignUpFragment extends Fragment {
 
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                //TODO: Implement actual sign up functionality
-                /*
-                make sure multiple, possibly impatient, clicks of the button don't perform or spawn redundant work
-
-                1.Send data to server
-                2. Get result
-                3. If successful go to next screen, otherwise inform the user why the sign up request wasn't successful
-
-                 */
-
+            public void onClick(View view)
+            {
                 String _username = binding.editTextSignUpUsername.getText().toString();
                 String _password = binding.editTextSignUpPassword.getText().toString();
                 String _usertype = usertype;
 
                 if(_usertype != "" && usernameIsValid && passwordIsValid)
                 {
-                    //TODO: Send stuff to the server
+                    SignRepository signRepository = TikEduApplication.getInstance().getSignRepository();
+                    signRepository.makeSignUpRequest(_username, _password, _usertype, new SignCallback()
+                    {
+                        @Override
+                        public void onComplete(Pair<Boolean, String> result)
+                        {
+                            //TODO: If successful go to next screen, otherwise inform the user why the sign up request wasn't successful
+                        }
+                    });
                 }
             }
         });
