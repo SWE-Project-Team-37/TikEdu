@@ -24,19 +24,6 @@ private FragmentNewUserBinding binding;
     ) {
 
         binding = FragmentNewUserBinding.inflate(inflater, container, false);
-        ///////
-        // go to "home" screen after pressing sign in button
-//        Button testingSignInBtn = binding.findViewById(R.id.testingButton);
-//        testingSignInBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // TODO Auto-generated method stub
-//                Intent intent = new Intent(getActivity(), StudentHomeActivity.class);
-//                getActivity().startActivity(intent);
-//
-//            }
-//        });
-        ////////
         return binding.getRoot();
 
     }
