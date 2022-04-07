@@ -1,15 +1,37 @@
 package tikedu.app.tikedu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.Toast;
+import android.widget.VideoView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
@@ -79,14 +101,36 @@ public class StudentHomeActivity extends AppCompatActivity
             }
         });
 
+
+
+        ActivityResultLauncher<Intent> launchGallery = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK)
+                    {
+                        // select video
+                        Intent data = result.getData();
+                        Uri selectedVideo = data.getData();
+                        String path = selectedVideo.getPath();
+                        System.out.println("Selected video path: " + path);
+
+                        //uploadVideo(path);
+                    }
+                }
+        );
+
         // post a video
         ImageButton postButton = findViewById(R.id.post_button);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StudentHomeActivity.this, ChooseVideoActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(StudentHomeActivity.this, ChooseVideoActivity.class);
+                //startActivity(intent);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                launchGallery.launch(intent);
             }
         });
     }
+
+
 }
