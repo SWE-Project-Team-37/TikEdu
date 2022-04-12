@@ -1,26 +1,15 @@
 package tikedu.app.tikedu;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Objects;
@@ -28,13 +17,17 @@ import java.util.Objects;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
+    private int PICK_VIDEO_FROM_GALLERY_REQUEST = 30;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +96,7 @@ public class StudentHomeActivity extends AppCompatActivity
 
 
 
-        ActivityResultLauncher<Intent> launchGallery = registerForActivityResult(
+        /*ActivityResultLauncher<Intent> launchGallery = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK)
@@ -117,20 +110,79 @@ public class StudentHomeActivity extends AppCompatActivity
                         //uploadVideo(path);
                     }
                 }
-        );
+        );*/
 
         // post a video
         ImageButton postButton = findViewById(R.id.post_button);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(StudentHomeActivity.this, ChooseVideoActivity.class);
-                //startActivity(intent);
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                launchGallery.launch(intent);
+                ////Intent intent = new Intent(StudentHomeActivity.this, ChooseVideoActivity.class);
+                ////startActivity(intent);
+
+                //Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                //launchGallery.launch(intent);
+                Intent intent = new Intent();
+                // only show videos
+                intent.setType("video/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                // choose video
+                startActivityForResult(
+                        Intent.createChooser(intent, "Select Video"),
+                        PICK_VIDEO_FROM_GALLERY_REQUEST);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_VIDEO_FROM_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            uploadFile(uri);
+        }
+    }
+
+    private void uploadFile(Uri fileUri) {
+        //RequestBody descriptionPart = RequestBody.create(MultipartBody.FORM, "Some Random Description");
+
+
+        RequestBody userIdPart = RequestBody.create(MultipartBody.FORM, "123");
+        RequestBody classIdPart = RequestBody.create(MultipartBody.FORM, "456");
+
+        File file = FileUtils.getFile(this, fileUri);
+
+        RequestBody filePart = RequestBody.create(
+                MediaType.parse(getContentResolver().getType(fileUri)),
+                file);
+
+        MultipartBody.Part newFile = MultipartBody.Part.createFormData("video", file.getName(), filePart);
+
+        // Create Retrofit instance
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://192.168.0.78:8080/") // we replace this (http://10.0.2.2:3000/api/) with IP (153.33.76.164)? 153.33.76.164
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+
+        // get client and call object for request
+        UserClient client = retrofit.create(UserClient.class);
+
+        // execute the request
+        Call<ResponseBody> call = client.uploadVideo(/*descriptionPart*/ userIdPart, classIdPart, newFile);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(StudentHomeActivity.this, "Oh yeahhh", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Toast.makeText(StudentHomeActivity.this, "No good", Toast.LENGTH_SHORT).show();
+                Log.d("VideoError", "", throwable);
+            }
+        });
+    }
 
 }

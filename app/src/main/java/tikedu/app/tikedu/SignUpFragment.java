@@ -200,6 +200,9 @@ public class SignUpFragment extends Fragment {
                         }
                     });
                 }
+                // Delete later, used for testing - Mason
+                //Intent intent = new Intent(getActivity(), StudentHomeActivity.class);
+                //startActivity(intent);
             }
         });
     }
