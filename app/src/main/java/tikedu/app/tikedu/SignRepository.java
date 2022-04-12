@@ -77,11 +77,11 @@ public class SignRepository
             jsonRequest.put("usertype", usertype);
 
             //send sign up request to server with JSON string
-            URL url = new URL("https", serverIp, 8080, "signUp");
+            URL url = new URL("http", serverIp, 8080, "signUp");
             Log.d("Sign Up", "made it here 1.2");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
             Log.d("Sign Up", "made it here 1.3");
-            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestMethod("GET");//Should be post
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
             httpConnection.setRequestProperty("Accept", "application/json");
             httpConnection.setDoOutput(true);
