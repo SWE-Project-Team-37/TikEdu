@@ -3,6 +3,7 @@ package tikedu.app.tikedu;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -160,7 +161,7 @@ public class StudentHomeActivity extends AppCompatActivity
 
         // Create Retrofit instance
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://192.168.0.78:8080/") // we replace this (http://10.0.2.2:3000/api/) with IP (153.33.76.164)? 153.33.76.164
+                .baseUrl("http://192.168.0.78:8080/") // we replace this (http://10.0.2.2:3000/api/) with IP (153.33.76.164)? 153.33.76.164
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
@@ -179,6 +180,7 @@ public class StudentHomeActivity extends AppCompatActivity
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Toast.makeText(StudentHomeActivity.this, "No good", Toast.LENGTH_SHORT).show();
+                Log.d("VideoError", "", throwable);
             }
         });
     }
