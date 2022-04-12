@@ -1,5 +1,7 @@
 package tikedu.app.tikedu;
 
+import android.os.Handler;
+import android.util.Log;
 import android.util.Pair;
 
 import org.json.JSONObject;
@@ -15,27 +17,30 @@ import java.util.concurrent.Executor;
 
 public class SignRepository
 {
-    private final String serverIp = "153.33.76.164";
+    private final String serverIp = "192.168.10.162";
     private final Executor executor;
+    private final Handler handler;
     private boolean isSigning = false;
+    private int timeout = 5000; //5000 milliseconds = 5s
     private static SignRepository signRepository = null;
 
-    private SignRepository(Executor executor)
+    private SignRepository(Executor executor, Handler handler)
     {
         this.executor = executor;
+        this.handler = handler;
     }
 
-    public static SignRepository getInstance(Executor executor)
+    public static SignRepository getInstance(Executor executor, Handler handler)
     {
         if(signRepository == null)
         {
-            signRepository = new SignRepository(executor);
+            signRepository = new SignRepository(executor, handler);
         }
 
         return signRepository;
     }
 
-    public void makeSignUpRequest(String username, String password, String usertype, SignCallback callback)
+    public void makeSignUpRequest(final String username, final String password, final String usertype, final SignCallback callback)
     {
         if(!isSigning)
         {
@@ -46,8 +51,14 @@ public class SignRepository
                 public void run()
                 {
                     Pair<Boolean, String> result = makeSignUpRequest_background(username, password, usertype);
-                    //TODO: Calbback using handler
-                    callback.onComplete(result);
+                    handler.post(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            callback.onComplete(result);
+                        }
+                    });
                 }
             });
         }
@@ -57,6 +68,8 @@ public class SignRepository
     {
         try
         {
+            //TODO: Get rid of Logging statements
+            Log.d("Sign Up", "made it here 1");
             //create JSON string to send to server
             JSONObject jsonRequest = new JSONObject();
             jsonRequest.put("username", username);
@@ -64,14 +77,19 @@ public class SignRepository
             jsonRequest.put("usertype", usertype);
 
             //send sign up request to server with JSON string
-            URL url = new URL("https", serverIp, -1, "signUp");
+            URL url = new URL("https", serverIp, 8080, "signUp");
+            Log.d("Sign Up", "made it here 1.2");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            Log.d("Sign Up", "made it here 1.3");
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
             httpConnection.setRequestProperty("Accept", "application/json");
             httpConnection.setDoOutput(true);
-            httpConnection.getOutputStream().write(jsonRequest.toString().getBytes(StandardCharsets.UTF_8));
+            httpConnection.setConnectTimeout(timeout);
+            httpConnection.setReadTimeout(timeout);
 
+            httpConnection.getOutputStream().write(jsonRequest.toString().getBytes(StandardCharsets.UTF_8));
+            Log.d("Sign Up", "made it here 2");
             //decode response from server
             String signUpResponse = convertStreamToString(httpConnection.getInputStream());
             JSONObject jsonResponse = (JSONObject) new JSONParser().parse(signUpResponse);
@@ -92,6 +110,9 @@ public class SignRepository
             return new Pair<Boolean, String>(isSuccessful, errorMessage);
         } catch (Exception e)
         {
+            Log.d("Sign Up", "made it here 3");
+            Log.d("Sign Up", "", e);
+            this.isSigning = false;
             return new Pair<Boolean, String>(Boolean.FALSE, "Something happened and sign up operation was not successful");
         }
     }
