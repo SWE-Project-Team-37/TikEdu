@@ -1,5 +1,6 @@
 package tikedu.app.tikedu;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +162,7 @@ public class SignUpFragment extends Fragment {
             }
         });
 
+        //makes request to start sign up interaction with server and handles UI that depends on result
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -176,6 +180,23 @@ public class SignUpFragment extends Fragment {
                         public void onComplete(Pair<Boolean, String> result)
                         {
                             //TODO: If successful go to next screen, otherwise inform the user why the sign up request wasn't successful
+                            if(result.first.booleanValue())
+                            {
+                                if(_usertype == "Student")
+                                {
+                                    Intent intent = new Intent(SignUpFragment.this.getActivity(), StudentHomeActivity.class);
+                                    startActivity(intent);
+                                }
+                                else if(_usertype == "Teacher")
+                                {
+                                    Intent intent = new Intent(SignUpFragment.this.getActivity(), TeacherHomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                            else
+                            {
+                               Snackbar.make(getActivity().findViewById(R.id.main_activity_coordinatorLayout), result.second, Snackbar.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
@@ -236,11 +257,13 @@ public class SignUpFragment extends Fragment {
         if(currentPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,20}$"))
         {
             binding.passwordValidationHint.setVisibility(View.GONE);
+            binding.editTextSignUpPassword.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.validText)));
             passwordIsValid = true;
         }
         else
         {
             binding.passwordValidationHint.setVisibility(View.VISIBLE);
+            binding.editTextSignUpPassword.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.invalidText)));
             passwordIsValid = false;
         }
     }
