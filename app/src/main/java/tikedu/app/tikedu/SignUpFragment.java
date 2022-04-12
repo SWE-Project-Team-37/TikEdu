@@ -1,5 +1,6 @@
 package tikedu.app.tikedu;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
@@ -179,6 +180,9 @@ public class SignUpFragment extends Fragment {
                         }
                     });
                 }
+                // Delete later, used for testing - Mason
+                //Intent intent = new Intent(getActivity(), StudentHomeActivity.class);
+                //startActivity(intent);
             }
         });
     }
