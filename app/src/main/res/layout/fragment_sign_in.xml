@@ -15,15 +15,15 @@
         android:text="Password"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/editTextSignUpPassword"
-        app:layout_constraintEnd_toEndOf="@+id/editTextSignUpPassword"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSignInPassword"
+        app:layout_constraintEnd_toEndOf="@+id/editTextSignInPassword"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextSignUpPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSignUpUsername"
+        app:layout_constraintStart_toStartOf="@+id/editTextSignInPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSignInUsername"
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/editTextSignUpUsername"
+        android:id="@+id/editTextSignInUsername"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextSignUpPassword"
+        android:id="@+id/editTextSignInPassword"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@+id/signInButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSignUpUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextSignInUsername" />
 
     <TextView
         android:id="@+id/textView"
@@ -55,10 +55,10 @@
         android:text="Username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/editTextSignUpUsername"
-        app:layout_constraintEnd_toEndOf="@+id/editTextSignUpUsername"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSignInUsername"
+        app:layout_constraintEnd_toEndOf="@+id/editTextSignInUsername"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/editTextSignUpUsername"
+        app:layout_constraintStart_toStartOf="@+id/editTextSignInUsername"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 

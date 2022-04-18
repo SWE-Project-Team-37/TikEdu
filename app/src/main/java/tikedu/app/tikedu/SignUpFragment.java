@@ -179,22 +179,27 @@ public class SignUpFragment extends Fragment {
                         @Override
                         public void onComplete(Pair<Boolean, String> result)
                         {
-                            //TODO: If successful go to next screen, otherwise inform the user why the sign up request wasn't successful
+                            Log.d("Sign Up", "Made it 5");
                             if(result.first.booleanValue())
                             {
-                                if(_usertype == "Student")
+                                Log.d("Sign Up", "Made it 6");
+                                Log.d("Sign Up", _usertype);
+                                if(_usertype.equals("Student"))
                                 {
+                                    Log.d("Sign Up", "Made it 7");
                                     Intent intent = new Intent(SignUpFragment.this.getActivity(), StudentHomeActivity.class);
                                     startActivity(intent);
                                 }
-                                else if(_usertype == "Teacher")
+                                else if(_usertype.equals("Teacher"))
                                 {
+                                    Log.d("Sign Up", "Made it 8");
                                     Intent intent = new Intent(SignUpFragment.this.getActivity(), TeacherHomeActivity.class);
                                     startActivity(intent);
                                 }
                             }
                             else
                             {
+                                Log.d("Sign Up", "Made it95");
                                Snackbar.make(getActivity().findViewById(R.id.main_activity_coordinatorLayout), result.second, Snackbar.LENGTH_SHORT).show();
                             }
                         }
