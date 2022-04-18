@@ -94,42 +94,18 @@ public class StudentHomeActivity extends AppCompatActivity
             }
         });
 
-
-
-        /*ActivityResultLauncher<Intent> launchGallery = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        // select video
-                        Intent data = result.getData();
-                        Uri selectedVideo = data.getData();
-                        String path = selectedVideo.getPath();
-                        System.out.println("Selected video path: " + path);
-
-                        //uploadVideo(path);
-                    }
-                }
-        );*/
-
         // post a video
         ImageButton postButton = findViewById(R.id.post_button);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ////Intent intent = new Intent(StudentHomeActivity.this, ChooseVideoActivity.class);
-                ////startActivity(intent);
-
-                //Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                //launchGallery.launch(intent);
                 Intent intent = new Intent();
                 // only show videos
                 intent.setType("video/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                // choose video
+                // "listener" for when video is chosen
                 startActivityForResult(
-                        Intent.createChooser(intent, "Select Video"),
-                        PICK_VIDEO_FROM_GALLERY_REQUEST);
+                        Intent.createChooser(intent, "Select Video"), PICK_VIDEO_FROM_GALLERY_REQUEST);
             }
         });
     }
@@ -148,20 +124,20 @@ public class StudentHomeActivity extends AppCompatActivity
         //RequestBody descriptionPart = RequestBody.create(MultipartBody.FORM, "Some Random Description");
 
 
-        RequestBody userIdPart = RequestBody.create(MultipartBody.FORM, "123");
+        RequestBody userIdPart = RequestBody.create(MultipartBody.FORM, "123"); // toString(Stuff)
         RequestBody classIdPart = RequestBody.create(MultipartBody.FORM, "456");
 
         File file = FileUtils.getFile(this, fileUri);
 
         RequestBody filePart = RequestBody.create(
-                MediaType.parse(getContentResolver().getType(fileUri)),
+                MediaType.parse("video/*"),// "multipart/form-data"), //getContentResolver().getType(fileUri))
                 file);
 
         MultipartBody.Part newFile = MultipartBody.Part.createFormData("video", file.getName(), filePart);
 
         // Create Retrofit instance
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.78:8080/") // we replace this (http://10.0.2.2:3000/api/) with IP (153.33.76.164)? 153.33.76.164
+                .baseUrl("http://153.33.76.164:8080/") // http://192.168.0.78:8080/ we replace this (http://10.0.2.2:3000/api/) with IP (153.33.76.164)? 153.33.76.164
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
@@ -170,7 +146,7 @@ public class StudentHomeActivity extends AppCompatActivity
         UserClient client = retrofit.create(UserClient.class);
 
         // execute the request
-        Call<ResponseBody> call = client.uploadVideo(/*descriptionPart*/ userIdPart, classIdPart, newFile);
+        Call<ResponseBody> call = client.uploadVideo(userIdPart, classIdPart, newFile);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

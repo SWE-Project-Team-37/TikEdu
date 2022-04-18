@@ -17,7 +17,7 @@ import java.util.concurrent.Executor;
 
 public class SignRepository
 {
-    private final String serverIp = "192.168.10.162";
+    private final String serverIp = "192.168.0.78";
     private final Executor executor;
     private final Handler handler;
     private boolean isSigning = false;
