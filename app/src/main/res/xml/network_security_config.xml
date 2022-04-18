@@ -2,6 +2,8 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">153.33.76.164</domain> <!-- Aditi's Server -->
+        <domain includeSubdomains="true">128.227.147.52</domain> <!-- Collin on UF VPN Server -->
         <domain includeSubdomains="true">192.168.10.162</domain> <!-- Local test Server -->
+        <domain includeSubdomains="true">192.168.0.78</domain> <!-- Local test Server -->
     </domain-config>
 </network-security-config>
