@@ -2,8 +2,10 @@ package tikedu.app.tikedu;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -30,7 +32,7 @@ public class StudentHomeActivity extends AppCompatActivity
         ImageButton classActivity = findViewById(R.id.computer_class_button);
         classActivity.setOnClickListener(view -> {
             // intent = go to class-selection screen
-            Intent startIntent = new Intent(getApplicationContext(), StudentClassesActivity.class);
+            Intent startIntent = new Intent(getApplicationContext(), StudentPostActivity.class);
             startActivity(startIntent);
         });
 
@@ -174,20 +176,17 @@ public class StudentHomeActivity extends AppCompatActivity
         });
     }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_VIDEO_FROM_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
-            VideoView chosenVideoView = findViewById(R.id.mainVideoView);
-            chosenVideoView.setVideoURI(selectedVideo);
-            chosenVideoView.start();
-            /*uploadFile(uri);
+            TikEduApplication.getInstance().addPostedVideo(uri, Boolean.FALSE);
         }
     }
 
-    private void uploadFile(Uri fileUri) {
+    /*private void uploadFile(Uri fileUri) {
         //RequestBody descriptionPart = RequestBody.create(MultipartBody.FORM, "Some Random Description");
 
 
@@ -213,7 +212,7 @@ public class StudentHomeActivity extends AppCompatActivity
         UserClient client = retrofit.create(UserClient.class);
 
         // execute the request
-        Call<ResponseBody> call = client.uploadVideo(/*descriptionPart userIdPart, classIdPart, newFile);
+        Call<ResponseBody> call = client.uploadVideo(descriptionPart userIdPart, classIdPart, newFile);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
