@@ -17,7 +17,7 @@ import java.util.concurrent.Executor;
 
 public class SignRepository
 {
-    private final String serverIp = "192.168.0.78";
+    private final String serverIp = "153.33.76.164";
     private final Executor executor;
     private final Handler handler;
     private boolean isSigning = false;
@@ -64,12 +64,35 @@ public class SignRepository
         }
     }
 
+    public void makeSignInRequest(final String username, final String password, final SignCallback callback)
+    {
+        if(!isSigning)
+        {
+            this.isSigning = true;
+            executor.execute(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Pair<Boolean, String> result = makeSignInRequest_background(username, password);
+                    handler.post(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            callback.onComplete(result);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     public Pair<Boolean, String> makeSignUpRequest_background(String username, String password, String usertype)
     {
         try
         {
-            //TODO: Get rid of Logging statements
-            Log.d("Sign Up", "made it here 1");
+            Log.d("Sign Up", "Made it 1");
             //create JSON string to send to server
             JSONObject jsonRequest = new JSONObject();
             jsonRequest.put("username", username);
@@ -78,29 +101,29 @@ public class SignRepository
 
             //send sign up request to server with JSON string
             URL url = new URL("http", serverIp, 8080, "signUp");
-            Log.d("Sign Up", "made it here 1.2");
             HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-            Log.d("Sign Up", "made it here 1.3");
             httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
             httpConnection.setRequestProperty("Accept", "application/json");
+            httpConnection.setRequestProperty("Accept-Encoding", "identity");
             httpConnection.setDoOutput(true);
             httpConnection.setConnectTimeout(timeout);
             httpConnection.setReadTimeout(timeout);
-
+            Log.d("Sign Up", "Made it 2");
             httpConnection.getOutputStream().write(jsonRequest.toString().getBytes(StandardCharsets.UTF_8));
-            Log.d("Sign Up", "made it here 2");
+            Log.d("Sign Up", "Made it 3");
             //decode response from server
             String signUpResponse = convertStreamToString(httpConnection.getInputStream());
-            JSONObject jsonResponse = (JSONObject) new JSONParser().parse(signUpResponse);
-            boolean signUpIsSuccessful = (boolean) jsonResponse.get("isSuccess");
-            String userAccessToken = (String) jsonResponse.get("userAccessToken");
+            Log.d("Sign Up", signUpResponse);
+            org.json.simple.JSONObject jsonResponse = /*(JSONObject)*/ (org.json.simple.JSONObject) new JSONParser().parse(signUpResponse);
+            boolean signUpIsSuccessful = (boolean) jsonResponse.get("signUpIsSuccessful");
+            String userAccessToken = String.valueOf(jsonResponse.get("userAccessToken"));
             String errorMessage = (String) jsonResponse.get("errorMessage");
 
             httpConnection.disconnect();
 
             Boolean isSuccessful = new Boolean(signUpIsSuccessful);
-
+            Log.d("Sign Up", "Made it 4");
             if(signUpIsSuccessful)
             {
                 UserRepository.createUser(userAccessToken);
@@ -110,8 +133,55 @@ public class SignRepository
             return new Pair<Boolean, String>(isSuccessful, errorMessage);
         } catch (Exception e)
         {
-            Log.d("Sign Up", "made it here 3");
             Log.d("Sign Up", "", e);
+            this.isSigning = false;
+            return new Pair<Boolean, String>(Boolean.FALSE, "Something happened and sign up operation was not successful");
+        }
+    }
+
+    public Pair<Boolean, String> makeSignInRequest_background(String username, String password)
+    {
+        try
+        {
+            //create JSON string to send to server
+            JSONObject jsonRequest = new JSONObject();
+            jsonRequest.put("username", username);
+            jsonRequest.put("password", password);
+
+            //send sign up request to server with JSON string
+            URL url = new URL("http", serverIp, 8080, "signIn");
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            httpConnection.setRequestProperty("Accept", "application/json");
+            httpConnection.setRequestProperty("Accept-Encoding", "identity");
+            httpConnection.setDoOutput(true);
+            httpConnection.setConnectTimeout(timeout);
+            httpConnection.setReadTimeout(timeout);
+
+            httpConnection.getOutputStream().write(jsonRequest.toString().getBytes(StandardCharsets.UTF_8));
+
+            //decode response from server
+            String signInResponse = convertStreamToString(httpConnection.getInputStream());
+            Log.d("Sign Up", signInResponse);
+            org.json.simple.JSONObject jsonResponse = (org.json.simple.JSONObject) new JSONParser().parse(signInResponse);
+            boolean signInIsSuccessful = (boolean) jsonResponse.get("signInIsSuccessful");
+            String userAccessToken = String.valueOf(jsonResponse.get("userAccessToken"));
+            String errorMessage = (String) jsonResponse.get("errorMessage");
+
+            httpConnection.disconnect();
+
+            Boolean isSuccessful = new Boolean(signInIsSuccessful);
+
+            if(signInIsSuccessful)
+            {
+                UserRepository.createUser(userAccessToken);
+            }
+
+            this.isSigning = false;
+            return new Pair<Boolean, String>(isSuccessful, errorMessage);
+        } catch (Exception e)
+        {
             this.isSigning = false;
             return new Pair<Boolean, String>(Boolean.FALSE, "Something happened and sign up operation was not successful");
         }
