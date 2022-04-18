@@ -1,33 +1,22 @@
 package tikedu.app.tikedu;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
 import java.util.Objects;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
     private int PICK_VIDEO_FROM_GALLERY_REQUEST = 30;
-
+    public int video_index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,13 +123,67 @@ public class StudentHomeActivity extends AppCompatActivity
         });
     }
 
+    public int updateVideoIndex()
+    {
+        int temp = video_index;
+        video_index = ((video_index+1)%5);
+        return temp;
+    }
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        String filename[] = {"videoclip.mp4", "vidoeclip2.mp4", "vidoeclip5.mp4", "videoclip4.mp4", "videoclip3.mp4"};
+        VideoView mainVideoView = findViewById(R.id.mainVideoView);
+
+        mainVideoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoclip1);
+        mainVideoView.start();
+        int i = 1;
+
+        mainVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+        {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer)
+            {
+                Log.d("Sign Up", String.valueOf(video_index));
+                int temp = updateVideoIndex();
+                if(temp == 0)
+                {
+                    mainVideoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoclip2);
+                }
+                else if(temp == 1)
+                {
+                    mainVideoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoclip3);
+                }
+                else if(temp == 2)
+                {
+                    mainVideoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoclip4);
+                }
+                else if(temp == 3)
+                {
+                    mainVideoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoclip5);
+                }
+                else if(temp == 4)
+                {
+                    mainVideoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.videoclip1);
+                }
+
+
+                mainVideoView.start();
+            }
+        });
+    }
+
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_VIDEO_FROM_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
-            uploadFile(uri);
+            VideoView chosenVideoView = findViewById(R.id.mainVideoView);
+            chosenVideoView.setVideoURI(selectedVideo);
+            chosenVideoView.start();
+            /*uploadFile(uri);
         }
     }
 
@@ -170,7 +213,7 @@ public class StudentHomeActivity extends AppCompatActivity
         UserClient client = retrofit.create(UserClient.class);
 
         // execute the request
-        Call<ResponseBody> call = client.uploadVideo(/*descriptionPart*/ userIdPart, classIdPart, newFile);
+        Call<ResponseBody> call = client.uploadVideo(/*descriptionPart userIdPart, classIdPart, newFile);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -183,6 +226,6 @@ public class StudentHomeActivity extends AppCompatActivity
                 Log.d("VideoError", "", throwable);
             }
         });
-    }
+    }*/
 
 }

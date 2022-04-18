@@ -13,4 +13,6 @@ public class StudentPostActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_post);
     }
+
+
 }
